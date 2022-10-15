@@ -1,0 +1,40 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: foo-app
+spec:
+  selector:
+    app: foo-app
+  ports:
+    - protocol: TCP
+      port: 9981
+      targetPort: 9981
+  type: LoadBalancer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: foo-app
+  labels:
+    app: foo-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: foo-app
+  template:
+    metadata:
+      labels:
+        app: foo-app
+    spec:
+      containers:
+      - name: foo-app
+        image: registry.local:5000/foo-app:latest
+        ports:
+        - containerPort: 9981
+        env:
+        - {name: PORT, value: "9981"}
+        - {name: DATABASE_URL, value: postgresql://admin:abc123@%__MY_IPADDR__%:5432/example}
+
