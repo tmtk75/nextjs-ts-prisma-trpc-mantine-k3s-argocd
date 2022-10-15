@@ -45,3 +45,8 @@ next-env.d.ts
 /prisma/dev.db
 /prisma/dev.db-journal
 /prisma/migrations
+
+# k3s
+/kubeconfig.yaml
+/pgdata
+/volume
