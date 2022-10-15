@@ -1,9 +1,14 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
-import { trpc } from '../utils/trpc';
+import { MantineProvider } from "@mantine/core";
+import type { AppProps } from "next/app";
+import "../styles/globals.css";
+import { trpc } from "../utils/trpc";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+  return (
+    <MantineProvider withGlobalStyles withNormalizeCSS>
+      <Component {...pageProps} />
+    </MantineProvider>
+  );
 }
 
 export default trpc.withTRPC(MyApp);
