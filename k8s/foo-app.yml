@@ -31,7 +31,7 @@ spec:
     spec:
       containers:
       - name: foo-app
-        image: registry.local:5000/foo-app:10
+        image: registry.local:5000/foo-app:latest
         ports:
         - containerPort: 9981
         env:
