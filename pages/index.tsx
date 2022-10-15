@@ -9,6 +9,7 @@ interface Props {
 const Home: NextPage<Props> = (props: Props) => {
   const { users } = props;
   const hello = trpc.hello.useQuery({ text: "Alice" });
+  const createUser = trpc.createUser.useMutation();
   if (!hello.data) {
     return <>Loading...</>;
   }
@@ -19,9 +20,15 @@ const Home: NextPage<Props> = (props: Props) => {
         <div key={p.id}>id: {p.id}</div>
       ))}
       <div>
-        <button onClick={async () => {}}>create a new user</button>
+        <button
+          onClick={async () => {
+            await createUser.mutateAsync({ name: Date.now().toString() });
+          }}
+        >
+          create a new user
+        </button>
       </div>
-      <div>{hello.data.greeting}</div>
+      <div>greeting: {hello?.data?.greeting}</div>
     </>
   );
 };
@@ -31,6 +38,7 @@ export default Home;
 export async function getServerSideProps() {
   const prisma = new PrismaClient();
   const users = await prisma.user.findMany();
+  prisma.$disconnect();
   return {
     props: { users },
   };
