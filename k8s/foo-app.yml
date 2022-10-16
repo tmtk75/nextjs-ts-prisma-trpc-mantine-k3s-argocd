@@ -36,5 +36,12 @@ spec:
         - containerPort: 9981
         env:
         - {name: PORT, value: "9981"}
-        - {name: DATABASE_URL, value: postgresql://admin:abc123@%__MY_IPADDR__%:5432/example}
-
+        - {name: DATABASE_URL, value: postgresql://admin:abc123@$(MY_IP_ADDR):5432/example}
+        - {name: FOO, value: $(FOO)}
+        - {name: AUTHOR, value: $(AUTHOR)}
+        #- {name: DESCRIPTION, value: $(DESCRIPTION)}
+        envFrom:
+        - configMapRef:
+            name: env-foo
+        - configMapRef:
+            name: extra

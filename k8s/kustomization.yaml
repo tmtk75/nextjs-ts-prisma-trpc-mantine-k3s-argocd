@@ -1,0 +1,45 @@
+#
+# *.env -> config-map -> vars -> $(NAME)
+#
+resources:
+  - foo-app.yml
+  - config-map.yml
+
+configMapGenerator:
+  - name: env-foo
+    envs:
+      - env-foo.env
+  - name: common
+    literals:
+      - author=tmtk75
+
+vars:
+  - name: FOO
+    objref:
+      apiVersion: v1
+      kind: ConfigMap
+      name: env-foo
+    fieldref:
+      fieldpath: data.foo
+  - name: AUTHOR
+    objref:
+      apiVersion: v1
+      kind: ConfigMap
+      name: common
+    fieldref:
+      fieldpath: data.author
+  - name: DESCRIPTION
+    objref:
+      apiVersion: v1
+      kind: ConfigMap
+      name: extra
+    fieldref:
+      fieldpath: data.description
+  - name: MY_IP_ADDR
+    objref:
+      apiVersion: v1
+      kind: ConfigMap
+      name: env-foo
+    fieldref:
+      fieldpath: data.my_ip_addr
+
