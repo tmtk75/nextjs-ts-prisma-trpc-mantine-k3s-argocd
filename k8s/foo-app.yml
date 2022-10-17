@@ -40,6 +40,7 @@ spec:
         - {name: FOO, value: $(FOO)}
         - {name: AUTHOR, value: $(AUTHOR)}
         #- {name: DESCRIPTION, value: $(DESCRIPTION)}
+        - {name: VERSION, value: "<replaced>"}
         envFrom:
         - configMapRef:
             name: env-foo

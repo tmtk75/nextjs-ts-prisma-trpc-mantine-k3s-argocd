@@ -28,13 +28,6 @@ vars:
       name: common
     fieldref:
       fieldpath: data.author
-  - name: DESCRIPTION
-    objref:
-      apiVersion: v1
-      kind: ConfigMap
-      name: extra
-    fieldref:
-      fieldpath: data.description
   - name: MY_IP_ADDR
     objref:
       apiVersion: v1
@@ -42,4 +35,19 @@ vars:
       name: env-foo
     fieldref:
       fieldpath: data.my_ip_addr
+
+replacements:
+- source:
+    kind: Deployment
+    name: foo-app
+    fieldPath: spec.template.spec.containers.[name=foo-app].image
+    options:
+      delimiter: ":"
+      index: 2  # registry.local:5000/foo-app:latest -> registry.local  5000/foo-app  latest, 
+  targets:
+  - select:
+      kind: Deployment
+      name: foo-app
+    fieldPaths:
+      - spec.template.spec.containers.[name=foo-app].env.[name=VERSION].value
 
