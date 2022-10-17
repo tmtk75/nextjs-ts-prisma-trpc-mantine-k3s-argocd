@@ -14,13 +14,6 @@ configMapGenerator:
       - author=tmtk75
 
 vars:
-  - name: FOO
-    objref:
-      apiVersion: v1
-      kind: ConfigMap
-      name: env-foo
-    fieldref:
-      fieldpath: data.foo
   - name: AUTHOR
     objref:
       apiVersion: v1
@@ -50,4 +43,14 @@ replacements:
       name: foo-app
     fieldPaths:
       - spec.template.spec.containers.[name=foo-app].env.[name=VERSION].value
+- source:
+    kind: ConfigMap
+    name: env-foo
+    fieldPath: data.foo
+  targets:
+  - select:
+      kind: Deployment
+      name: foo-app
+    fieldPaths:
+      - spec.template.spec.containers.[name=foo-app].env.[name=FOO].value
 
